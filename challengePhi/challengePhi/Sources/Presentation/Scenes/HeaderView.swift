@@ -6,13 +6,14 @@
 //
 
 import Foundation
-import UIKit
 import TinyConstraints
+import UIKit
 
 class HeaderView: PHView {
 
     // MARK: Properties
     private var isShowingBalance = false
+    private var balance: Int = 0
 
     // MARK: Init
 
@@ -74,13 +75,13 @@ class HeaderView: PHView {
         titleStackView.addArrangedSubview(UIView())
     }
 
-
     override func configureConstraints() {
         amountStackView.edgesToSuperview(insets: .left(16) + .vertical(16))
     }
 
     func setup(for balance: Balance) {
-        amountLabel.text = String(balance.amount)
+        self.balance = balance.amount
+        amountLabel.text = "R$ \(balance.amount),00"
     }
 
     @objc func didTapOnEyeButton() {
@@ -97,7 +98,7 @@ class HeaderView: PHView {
         if shouldShow {
             let eyeImage = UIImage(systemName: "eye")?.withTintColor(Constants.Color.cyan, renderingMode: .alwaysOriginal)
             eyeButton.setImage(eyeImage, for: .normal)
-            amountLabel.text = "R$ 0,00"
+            amountLabel.text = "R$ \(balance),00"
         } else {
             let eyeImageSlash = UIImage(systemName: "eye.slash")?.withTintColor(Constants.Color.cyan, renderingMode: .alwaysOriginal)
             eyeButton.setImage(eyeImageSlash, for: .normal)
