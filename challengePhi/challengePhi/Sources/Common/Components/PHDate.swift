@@ -41,7 +41,7 @@ class PHDate {
     // MARK: Properties
     let rawValue: Date
     private let dateFormatter = DateFormatter()
-    private let dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+    private let dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
     init(rawValue: Date) {
         self.rawValue = rawValue
