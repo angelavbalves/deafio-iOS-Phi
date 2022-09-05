@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import UIKit
 import TinyConstraints
+import UIKit
 
 class StatementCell: UITableViewCell {
 
@@ -22,64 +22,71 @@ class StatementCell: UITableViewCell {
         configureConstraints()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: Views
-    private let totalStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
+    private let totalStackView = UIStackView() .. {
+        $0.axis = .horizontal
+        $0.distribution = .equalSpacing
+    }
 
-        return stackView
-    }()
+    private let secondStackView = UIStackView() .. {
+        $0.axis = .vertical
+        $0.distribution = .equalCentering
+        $0.alignment = .center
+    }
 
-    private let infosStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 18
+    private let infosStackView = UIStackView() .. {
+        $0.axis = .vertical
+        $0.spacing = 18
+    }
 
-        return stackView
-    }()
+    private let operationLabel = UILabel() .. {
+        $0.numberOfLines = 1
+        $0.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 18)
+    }
 
-    private let operationLabel: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 1
-        label.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 18)
+    private let nameLabel = UILabel() .. {
+        $0.textColor = Constants.Color.gray
+        $0.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 14)
+    }
 
-        return label
-    }()
+    private let amountLabel = UILabel() .. {
+        $0.font = UIFont(name: "Ropa Sans Pro Ropa Sans SC Medium", size: 18)
+        $0.font = UIFont.boldSystemFont(ofSize: 14.0)
+    }
 
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Constants.Color.gray
-        label.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 14)
-        return label
-    }()
+    private let dateLabel = UILabel() .. {
+        $0.textColor = Constants.Color.gray
+        $0.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 18)
+    }
 
-    private let amountLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "Ropa Sans Pro Ropa Sans SC Medium", size: 18)
-        label.font = UIFont.boldSystemFont(ofSize: 14.0)
+    private let pixView = UIView() .. {
+        $0.height(24)
+        $0.width(48)
+        $0.isHidden = true
+    }
 
-        return label
-    }()
-
-    private let dateLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Constants.Color.gray
-        label.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 18)
-        return label
-    }()
+    private let pixLabel = UILabel() .. {
+        $0.text = "PIX"
+        $0.textColor = .white
+        $0.textAlignment = .center
+        $0.font = UIFont(name: "Tanseek Modern Arabic Medium", size: 10)
+        $0.height(22)
+        $0.width(48)
+    }
 
     private func configureSubviews() {
         addSubview(totalStackView)
-        totalStackView.addArrangedSubview(infosStackView)
-        infosStackView.addArrangedSubview(operationLabel)
-        totalStackView.addArrangedSubview(dateLabel)
-        infosStackView.addArrangedSubview(nameLabel)
-        infosStackView.addArrangedSubview(amountLabel)
+        pixView.addSubview(pixLabel)
+        totalStackView.addArrangedSubviews([infosStackView, secondStackView])
+        infosStackView.addArrangedSubviews([operationLabel,
+                                            nameLabel,
+                                            amountLabel])
+        secondStackView.addArrangedSubviews([pixView, dateLabel])
     }
 
     private func configureConstraints() {
@@ -99,8 +106,14 @@ class StatementCell: UITableViewCell {
                 nameLabel.text = origin
             }
         }
-
-
+        if statement.tType == "PIXCASHOUT" {
+            pixView.isHidden = false
+            pixView.backgroundColor = .systemRed
+        } else if statement.tType == "PIXCASHIN" {
+            pixView.isHidden = false
+            pixView.backgroundColor = Constants.Color.cyan
+        } else {
+            pixView.isHidden = true
+        }
     }
-
 }
