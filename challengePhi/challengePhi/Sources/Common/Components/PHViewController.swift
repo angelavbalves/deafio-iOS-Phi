@@ -9,11 +9,29 @@ import UIKit
 
 class PHViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    // MARK: Views
+    var loadingView = PHLoadingView()
 
+    // MARK: Init
+    init() {
+        super.init(nibName: nil, bundle: nil)
     }
 
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: Lyfe cicle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(loadingView)
+        configureConstraints()
+    }
+
+    private func configureConstraints() {
+        loadingView.edgesToSuperview()
+    }
 
 }
 

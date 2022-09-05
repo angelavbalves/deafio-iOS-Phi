@@ -12,6 +12,7 @@ class PHView: UIView {
 
     init() {
         super.init(frame: .zero)
+        backgroundColor = .white
         configureSubviews()
         configureConstraints()
     }
